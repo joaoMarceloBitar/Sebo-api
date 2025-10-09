@@ -1,0 +1,145 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Autor {
+  id              Int      @id @default(autoincrement())
+  nome            String
+  nacionalidade   String?
+  biografia       String?
+
+  livros          Livro[] // Um autor pode ter muitos livros
+}
+
+model Editora {
+  id              Int      @id @default(autoincrement())
+  nome            String
+  cidade          String?
+
+  // Relações
+  livros          Livro[] // Uma editora pode ter muitos livros
+}
+
+model Categoria {
+  id              Int      @id @default(autoincrement())
+  nome_categoria  String   @unique
+
+  // Relações
+  livros          LivroCategoria[] // Uma categoria pode estar em muitos livros
+}
+
+model Livro {
+  id              Int      @id @default(autoincrement())
+  titulo          String
+  subtitulo       String?
+  imagem_url      String?
+  ano_publicacao  Int
+  numero_paginas  Int?
+  edicao          String?
+  condicao        String // Ex: 'novo', 'usado - bom', 'usado - razoável'
+  descricao       String
+
+  // Chaves Estrangeiras (FK) para Autor e Editora
+  id_autor        Int
+  id_editora      Int
+
+  // Relações
+  autor           Autor              @relation(fields: [id_autor], references: [id])
+  editora         Editora            @relation(fields: [id_editora], references: [id])
+  categorias      LivroCategoria[]   // Um livro pode ter muitas categorias
+  anuncios        Anuncio[]          // Um livro pode ter muitos anúncios
+}
+
+model LivroCategoria {
+  id_livro      Int
+  id_categoria  Int
+
+  // Chaves Estrangeiras (FK)
+  livro         Livro     @relation(fields: [id_livro], references: [id])
+  categoria     Categoria @relation(fields: [id_categoria], references: [id])
+
+  @@id([id_livro, id_categoria]) // Chave primária composta
+}
+
+model Usuario {
+  id            String   @id @default(uuid())
+  nome          String
+  email         String   @unique
+  senha         String
+  endereco      String? 
+  tipo_usuario  TipoUsuario
+
+  pedidos       Pedido[]
+  propostas     Proposta[]
+  @@map("usuarios")
+
+}
+
+enum TipoUsuario {
+  CLIENTE
+  ADMIN // só o dono do sebo
+}
+
+model Anuncio {
+  id                Int      @id @default(autoincrement())
+  preco             Float
+  condicao_detalhada String
+  disponivel        Boolean  @default(true)
+  data_criacao      DateTime @default(now())
+
+  id_livro          Int
+  livro             Livro @relation(fields: [id_livro], references: [id])
+
+  pedidos           PedidoAnuncio[]
+  propostas         Proposta[]
+  @@map("anuncios")
+}
+
+model Pedido {
+  id            Int      @id @default(autoincrement())
+  data_pedido   DateTime @default(now())
+  status        StatusPedido
+  valor_total   Float
+
+  id_comprador  String
+  comprador     Usuario @relation(fields: [id_comprador], references: [id])
+
+  anuncios      PedidoAnuncio[]
+  @@map("pedidos")
+}
+
+model Proposta {
+  id          Int       @id @default(autoincrement())
+  usuario     Usuario   @relation(fields: [usuarioId], references: [id])
+  usuarioId   String    @db.VarChar(36)
+  anuncio     Anuncio     @relation(fields: [anuncioId], references: [id])
+  anuncioId     Int
+  descricao   String    @db.VarChar(255)
+  resposta    String?   @db.VarChar(255)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt  
+  @@map("propostas")
+}
+
+//carrinho
+model PedidoAnuncio {
+  id_pedido  Int
+  id_anuncio Int
+
+  pedido   Pedido  @relation(fields: [id_pedido], references: [id])
+  anuncio  Anuncio @relation(fields: [id_anuncio], references: [id])
+
+  @@id([id_pedido, id_anuncio])
+}
+
+enum StatusPedido {
+  PENDENTE
+  ENVIADO
+  ENTREGUE
+  CANCELADO
+}

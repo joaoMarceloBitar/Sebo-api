@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    /* Linguagem e compatibilidade */
+    "target": "ES2020",
+    "module": "commonjs",
+    "lib": ["ES2020"],
+
+    /* Suporte a import/export padrão */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    /* Estrutura do projeto */
+    "rootDir": "./",
+    "outDir": "./dist",
+
+    /* Verificações e boas práticas */
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
+    /* Melhor experiência com Node e Express */
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+
+    /* Suporte a decoradores (se usar no futuro) */
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
