@@ -7,7 +7,6 @@ import routesAutores from './routes/autores'
 import routesCategorias from './routes/categorias'
 import routesEditoras from './routes/editoras'
 import routesAnuncios from './routes/anuncios'
-import routesPropostas from './routes/propostas'
 
 const app = express()
 const port = 3000
@@ -22,7 +21,6 @@ app.use("/api/autores", routesAutores)
 app.use("/api/categorias", routesCategorias)
 app.use("/api/editoras", routesEditoras)
 app.use("/api/anuncios", routesAnuncios)
-app.use("/api/propostas", routesPropostas)
 
 app.get('/', (req, res) => {
   res.json({
