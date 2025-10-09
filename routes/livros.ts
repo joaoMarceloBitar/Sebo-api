@@ -22,7 +22,7 @@ const livroSchema = z.object({
 router.get("/", async (req, res) => {
   try {
     const livros = await prisma.livro.findMany({
-      include: { autor: true, editora: true, categorias: true, anuncios: true }
+    //  include: { autor: true, editora: true, categorias: true, anuncios: true }
     });
     res.status(200).json(livros);
   } catch (error) {
@@ -30,7 +30,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Buscar livro por ID
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -48,7 +47,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Criar livro
 router.post("/", async (req, res) => {
   const valida = livroSchema.safeParse(req.body);
   if (!valida.success) {
@@ -65,7 +63,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Atualizar livro
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
   const valida = livroSchema.partial().safeParse(req.body);
@@ -84,7 +81,6 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Deletar livro
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -97,7 +93,6 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-// PATCH para atualizar imagem_url de vários livros
 router.patch("/imagens", async (req, res) => {
   const schema = z.array(z.object({
     id: z.number().int(),
