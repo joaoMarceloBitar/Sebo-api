@@ -20,7 +20,6 @@ router.get("/", async (req, res) => {
     res.status(200).json(anuncios);
   } catch (error) {
     res.status(500).json({ erro: "Erro ao listar anúncios." });
-    await prisma.$disconnect();
   }
 });
 
