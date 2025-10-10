@@ -30,23 +30,18 @@ function validaSenha(senha: string) {
 
   const mensa: string[] = []
 
-  // .length: retorna o tamanho da string (da senha)
   if (senha.length < 8) {
     mensa.push("Erro... senha deve possuir, no mínimo, 8 caracteres")
   }
 
-  // contadores
   let pequenas = 0
   let grandes = 0
   let numeros = 0
   let simbolos = 0
 
-  // senha = "abc123"
-  // letra = "a"
 
-  // percorre as letras da variável senha
+
   for (const letra of senha) {
-    // expressão regular
     if ((/[a-z]/).test(letra)) {
       pequenas++
     }
@@ -102,7 +97,6 @@ router.post("/", async (req, res) => {
     const usuario = await prisma.usuario.create({
       data: { nome, email, senha: hash, endereco, tipo_usuario }
     })
-    // Não retorne a senha!
     res.status(201).json({ id: usuario.id, nome: usuario.nome, email: usuario.email, tipo_usuario: usuario.tipo_usuario })
   } catch (error) {
     res.status(400).json({ erro: "Erro ao cadastrar usuário." })

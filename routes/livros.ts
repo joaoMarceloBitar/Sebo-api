@@ -22,7 +22,7 @@ const livroSchema = z.object({
 router.get("/", async (req, res) => {
   try {
     const livros = await prisma.livro.findMany({
-    //  include: { autor: true, editora: true, categorias: true, anuncios: true }
+    include: { autor: true, editora: true, categorias: true, anuncios: true,}
     });
     res.status(200).json(livros);
   } catch (error) {

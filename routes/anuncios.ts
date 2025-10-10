@@ -12,7 +12,6 @@ const anuncioSchema = z.object({
   id_livro: z.number().int()
 });
 
-// Listar todos os anúncios
 router.get("/", async (req, res) => {
   try {
     const anuncios = await prisma.anuncio.findMany({
@@ -21,10 +20,10 @@ router.get("/", async (req, res) => {
     res.status(200).json(anuncios);
   } catch (error) {
     res.status(500).json({ erro: "Erro ao listar anúncios." });
+    await prisma.$disconnect();
   }
 });
 
-// Buscar anúncio por ID
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -42,7 +41,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Criar anúncio
 router.post("/", async (req, res) => {
   const valida = anuncioSchema.safeParse(req.body);
   if (!valida.success) {
@@ -62,7 +60,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Atualizar anúncio
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
   const valida = anuncioSchema.partial().safeParse(req.body);
@@ -81,7 +78,6 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Deletar anúncio
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {

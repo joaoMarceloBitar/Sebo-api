@@ -9,12 +9,10 @@ const router = Router()
 router.post("/", async (req, res) => {
   const { email, senha } = req.body
 
-  // em termos de segurança, o recomendado é exibir uma mensagem padrão
-  // a fim de evitar de dar "dicas" sobre o processo de login para hackers
+
   const mensaPadrao = "Login ou senha incorretos"
 
   if (!email || !senha) {
-    // res.status(400).json({ erro: "Informe e-mail e senha do usuário" })
     res.status(400).json({ erro: mensaPadrao })
     return
   }
@@ -25,14 +23,11 @@ router.post("/", async (req, res) => {
     })
 
     if (usuario == null) {
-      // res.status(400).json({ erro: "E-mail inválido" })
       res.status(400).json({ erro: mensaPadrao })
       return
     }
 
-    // se o e-mail existe, faz-se a comparação dos hashs
     if (bcrypt.compareSync(senha, usuario.senha)) {
-      // se confere, gera e retorna o token
       const token = jwt.sign({
         usuarioLogadoId: usuario.id,
         usuarioLogadoNome: usuario.nome,

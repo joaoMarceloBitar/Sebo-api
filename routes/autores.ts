@@ -11,7 +11,6 @@ const autorSchema = z.object({
   biografia: z.string().optional()
 });
 
-// Listar autores
 router.get("/", async (req, res) => {
   try {
     const autores = await prisma.autor.findMany();
@@ -21,7 +20,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Criar autor
 router.post("/", async (req, res) => {
   const valida = autorSchema.safeParse(req.body);
   if (!valida.success) {
@@ -36,7 +34,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Buscar autor por ID
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -51,7 +48,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Atualizar autor
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
   const valida = autorSchema.partial().safeParse(req.body);
@@ -70,7 +66,6 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Deletar autor
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {

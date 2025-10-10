@@ -44,11 +44,9 @@ model Livro {
   condicao        String // Ex: 'novo', 'usado - bom', 'usado - razoável'
   descricao       String
 
-  // Chaves Estrangeiras (FK) para Autor e Editora
   id_autor        Int
   id_editora      Int
 
-  // Relações
   autor           Autor              @relation(fields: [id_autor], references: [id])
   editora         Editora            @relation(fields: [id_editora], references: [id])
   categorias      LivroCategoria[]   // Um livro pode ter muitas categorias

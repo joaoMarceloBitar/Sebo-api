@@ -10,7 +10,6 @@ const editoraSchema = z.object({
   cidade: z.string().optional()
 });
 
-// Listar editoras
 router.get("/", async (req, res) => {
   try {
     const editoras = await prisma.editora.findMany();
@@ -20,7 +19,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Criar editora
 router.post("/", async (req, res) => {
   const valida = editoraSchema.safeParse(req.body);
   if (!valida.success) {
@@ -35,7 +33,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Buscar editora por ID
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -50,7 +47,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Atualizar editora
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
   const valida = editoraSchema.partial().safeParse(req.body);
@@ -69,7 +65,6 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Deletar editora
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {

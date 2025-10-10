@@ -9,7 +9,6 @@ const categoriaSchema = z.object({
   nome_categoria: z.string().min(2, "Nome da categoria obrigatório")
 });
 
-// Listar categorias
 router.get("/", async (req, res) => {
   try {
     const categorias = await prisma.categoria.findMany();
@@ -19,7 +18,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Criar categoria
 router.post("/", async (req, res) => {
   const valida = categoriaSchema.safeParse(req.body);
   if (!valida.success) {
@@ -34,7 +32,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Buscar categoria por ID
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -49,7 +46,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Atualizar categoria
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
   const valida = categoriaSchema.partial().safeParse(req.body);
@@ -68,7 +64,6 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Deletar categoria
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
