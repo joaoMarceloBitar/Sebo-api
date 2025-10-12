@@ -14,9 +14,16 @@ const anuncioSchema = z.object({
 
 router.get("/", async (req, res) => {
   try {
-    const anuncios = await prisma.anuncio.findMany({
-      include: { livro: true }
-    });
+  const anuncios = await prisma.anuncio.findMany({
+    include: {
+      livro: {
+        select: {
+          id: true,
+          titulo: true
+        }
+      }
+    }
+  });
     res.status(200).json(anuncios);
   } catch (error) {
     res.status(500).json({ erro: "Erro ao listar anúncios." });
