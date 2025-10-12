@@ -72,7 +72,6 @@ model Usuario {
   endereco      String? 
   tipo_usuario  TipoUsuario
 
-  pedidos       Pedido[]
   propostas     Proposta[]
   @@map("usuarios")
 
@@ -93,23 +92,10 @@ model Anuncio {
   id_livro          Int
   livro             Livro @relation(fields: [id_livro], references: [id])
 
-  pedidos           PedidoAnuncio[]
   propostas         Proposta[]
   @@map("anuncios")
 }
 
-model Pedido {
-  id            Int      @id @default(autoincrement())
-  data_pedido   DateTime @default(now())
-  status        StatusPedido
-  valor_total   Float
-
-  id_comprador  String
-  comprador     Usuario @relation(fields: [id_comprador], references: [id])
-
-  anuncios      PedidoAnuncio[]
-  @@map("pedidos")
-}
 
 model Proposta {
   id          Int       @id @default(autoincrement())
@@ -122,17 +108,6 @@ model Proposta {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt  
   @@map("propostas")
-}
-
-//carrinho
-model PedidoAnuncio {
-  id_pedido  Int
-  id_anuncio Int
-
-  pedido   Pedido  @relation(fields: [id_pedido], references: [id])
-  anuncio  Anuncio @relation(fields: [id_anuncio], references: [id])
-
-  @@id([id_pedido, id_anuncio])
 }
 
 enum StatusPedido {
