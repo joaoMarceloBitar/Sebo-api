@@ -23,7 +23,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/destaques", async (req, res) => {
+router.get("/api/destaques", async (req, res) => {
   try {
     const livros = await prisma.anuncio.findMany({
       include: {
