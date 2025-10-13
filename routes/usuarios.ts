@@ -13,7 +13,6 @@ const usuarioSchema = z.object({
   }),
   email: z.string().email({message: "Informe um e-mail válido"}),
   senha: z.string(),
-  endereco: z.string(),
   cidade: z.string(),
 })
 
@@ -91,13 +90,13 @@ router.post("/", async (req, res) => {
   const salt = bcrypt.genSaltSync(12)
   const hash = bcrypt.hashSync(valida.data.senha, salt)
 
-  const { nome, email, endereco, cidade } = valida.data
+  const { nome, email, cidade } = valida.data
 
   try {
     const usuario = await prisma.usuario.create({
-      data: { nome, email, senha: hash, endereco, cidade }
+      data: { nome, email, senha: hash, cidade }
     })
-    res.status(201).json({ id: usuario.id, nome: usuario.nome, email: usuario.email, endereco: usuario.endereco, cidade: usuario.cidade })
+    res.status(201).json({ id: usuario.id, nome: usuario.nome, email: usuario.email, cidade: usuario.cidade })
   } catch (error) {
     res.status(400).json({ erro: "Erro ao cadastrar usuário." })
   }
