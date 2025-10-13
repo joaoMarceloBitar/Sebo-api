@@ -18,36 +18,36 @@ const port = 3000
 app.use(express.json())
 app.use(cors())
 
-app.use("/api/login", routesLogin)
-app.use("/api/usuarios", routesUsuarios)
-app.use("/api/livros", routesLivros)
-app.use("/api/autores", routesAutores)
-app.use("/api/categorias", routesCategorias)
-app.use("/api/editoras", routesEditoras)
+app.use("/login", routesLogin)
+app.use("/usuarios", routesUsuarios)
+app.use("/livros", routesLivros)
+app.use("/autores", routesAutores)
+app.use("/categorias", routesCategorias)
+app.use("/editoras", routesEditoras)
 app.use("/anuncios", routesAnuncios)
-app.use("/api/propostas", routesPropostas)
-app.use("/api/dashboards", routesDashboard)
-app.use("/api/adminLogin", routesAdminLogin)
-app.use("/api/admins", routesAdmins)
+app.use("/propostas", routesPropostas)
+app.use("/dashboards", routesDashboard)
+app.use("/adminLogin", routesAdminLogin)
+app.use("/admins", routesAdmins)
 
 app.get('/', (req, res) => {
   res.json({
     message: 'API: Sebo Online - Sistema de Revenda de Livros',
     version: '1.0.0',
     endpoints: {
-      login: '/api/login',
-      usuarios: '/api/usuarios',
-      autores: '/api/autores',
-      editoras: '/api/editoras',
-      categorias: '/api/categorias',
-      livros: '/api/livros',
-      livroCategoria: '/api/livro-categoria',
+      login: '/login',
+      usuarios: '/usuarios',
+      autores: '/autores',
+      editoras: '/editoras',
+      categorias: '/categorias',
+      livros: '/livros',
+      livroCategoria: '/livro-categoria',
       anuncios: '/anuncios',
-      pedidos: '/api/pedidos',
-      propostas: '/api/propostas',
-      dashboards: '/api/dashboards',
-      adminLogin: '/api/adminLogin',
-      admins: '/api/admins'
+      pedidos: '/pedidos',
+      propostas: '/propostas',
+      dashboards: '/dashboards',
+      adminLogin: '/adminLogin',
+      admins: '/admins'
     }
   })
 })
