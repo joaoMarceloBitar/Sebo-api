@@ -95,9 +95,9 @@ router.post("/", async (req, res) => {
 
   try {
     const usuario = await prisma.usuario.create({
-      data: { nome, email, senha: hash, endereco, tipo_usuario }
+      data: { nome, email, senha: hash, endereco }
     })
-    res.status(201).json({ id: usuario.id, nome: usuario.nome, email: usuario.email, tipo_usuario: usuario.tipo_usuario })
+    res.status(201).json({ id: usuario.id, nome: usuario.nome, email: usuario.email })
   } catch (error) {
     res.status(400).json({ erro: "Erro ao cadastrar usuário." })
   }
