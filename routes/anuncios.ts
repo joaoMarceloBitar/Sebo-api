@@ -40,6 +40,22 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/destaques", async (req, res) => {
+  try {
+    const livros = await prisma.anuncio.findMany({
+      include: {
+        livro: true,
+      },
+      where: {
+        destaque: true
+      }
+    })
+    res.status(200).json(livros)
+  } catch (error) {
+    res.status(500).json({ erro: error })
+  }
+})
+
 router.post("/", async (req, res) => {
   const valida = anuncioSchema.safeParse(req.body);
   if (!valida.success) {

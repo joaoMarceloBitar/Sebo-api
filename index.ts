@@ -8,6 +8,9 @@ import routesCategorias from './routes/categorias'
 import routesEditoras from './routes/editoras'
 import routesAnuncios from './routes/anuncios'
 import routesPropostas from './routes/propostas'
+import routesDashboard from './routes/dashboards'
+import routesAdminLogin from './routes/adminLogin'
+import routesAdmins from './routes/admins'
 
 const app = express()
 const port = 3000
@@ -23,6 +26,9 @@ app.use("/api/categorias", routesCategorias)
 app.use("/api/editoras", routesEditoras)
 app.use("/api/anuncios", routesAnuncios)
 app.use("/api/propostas", routesPropostas)
+app.use("/api/dashboards", routesDashboard)
+app.use("/api/adminLogin", routesAdminLogin)
+app.use("/api/admins", routesAdmins)
 
 app.get('/', (req, res) => {
   res.json({
@@ -38,7 +44,10 @@ app.get('/', (req, res) => {
       livroCategoria: '/api/livro-categoria',
       anuncios: '/api/anuncios',
       pedidos: '/api/pedidos',
-      propostas: '/api/propostas'
+      propostas: '/api/propostas',
+      dashboards: '/api/dashboards',
+      adminLogin: '/api/adminLogin',
+      admins: '/api/admins'
     }
   })
 })
