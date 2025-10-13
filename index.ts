@@ -24,7 +24,7 @@ app.use("/api/livros", routesLivros)
 app.use("/api/autores", routesAutores)
 app.use("/api/categorias", routesCategorias)
 app.use("/api/editoras", routesEditoras)
-app.use("/api/anuncios", routesAnuncios)
+app.use("/anuncios", routesAnuncios)
 app.use("/api/propostas", routesPropostas)
 app.use("/api/dashboards", routesDashboard)
 app.use("/api/adminLogin", routesAdminLogin)
@@ -42,7 +42,7 @@ app.get('/', (req, res) => {
       categorias: '/api/categorias',
       livros: '/api/livros',
       livroCategoria: '/api/livro-categoria',
-      anuncios: '/api/anuncios',
+      anuncios: '/anuncios',
       pedidos: '/api/pedidos',
       propostas: '/api/propostas',
       dashboards: '/api/dashboards',
