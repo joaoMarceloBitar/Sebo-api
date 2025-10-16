@@ -43,7 +43,6 @@ app.get('/', (req, res) => {
       livros: '/livros',
       livroCategoria: '/livro-categoria',
       anuncios: '/anuncios',
-      pedidos: '/pedidos',
       propostas: '/propostas',
       dashboards: '/dashboards',
       adminLogin: '/adminLogin',

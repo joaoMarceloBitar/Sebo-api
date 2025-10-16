@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { PrismaClient } from "@prisma/client";
 import { z } from "zod";
+import { verificaToken } from "../middelwares/verificaToken";
 
 const prisma = new PrismaClient();
 const router = Router();
@@ -104,5 +105,26 @@ router.delete("/:id", async (req, res) => {
     res.status(400).json({ erro: "Erro ao deletar anúncio." });
   }
 });
+
+
+router.patch("/destacar/:id", verificaToken, async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const anuncioDestacar = await prisma.anuncio.findUnique({
+      where: { id: Number(id) },
+      select: { destaque: true }, 
+    });
+
+    const carro = await prisma.anuncio.update({
+      where: { id: Number(id) },
+      data: { destaque: !anuncioDestacar?.destaque }
+    })
+    res.status(200).json(anuncioSchema)
+  } catch (error) {
+    res.status(400).json(error)
+  }
+})
+
 
 export default router;

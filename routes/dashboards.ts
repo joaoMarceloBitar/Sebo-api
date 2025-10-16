@@ -1,79 +1,69 @@
-import { PrismaClient } from "@prisma/client"
-import { Router } from "express"
+// backend/src/routes/dashboard.ts
+import { Router } from "express";
+import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient()
-const router = Router()
+const router = Router();
+const prisma = new PrismaClient();
 
+// ✅ Endpoint: dados gerais
 router.get("/gerais", async (req, res) => {
   try {
-    const usuarios = await prisma.usuario.count()
-    const anuncios = await prisma.anuncio.count()
-    const propostas = await prisma.proposta.count()
-    res.status(200).json({ usuarios, anuncios, propostas })
+    const usuarios = await prisma.usuario.count();
+    const anuncios = await prisma.anuncio.count();
+    const propostas = await prisma.proposta.count();
+
+    res.status(200).json({ usuarios, anuncios, propostas });
   } catch (error) {
-    res.status(400).json(error)
+    console.error(error);
+    res.status(500).json({ erro: "Erro ao buscar dados gerais" });
   }
-})
+});
 
-type LivroComAnuncios = {
-  id: number;
-  titulo: string;
-  _count: {
-    anuncios: number;
-  };
-};
-
+// ✅ Endpoint: livros com anúncios
 router.get("/livrosComAnuncios", async (req, res) => {
   try {
     const livros = await prisma.livro.findMany({
       select: {
         id: true,
         titulo: true,
-        _count: {
-          select: { anuncios: true }
-        }
-      }
+        _count: { select: { anuncios: true } },
+      },
     });
 
-    const livrosFiltrados = livros
-      .filter((livro: LivroComAnuncios) => livro._count.anuncios > 0)
-      .map((livro: LivroComAnuncios) => ({
+    // Filtra apenas livros com anúncios e formata para frontend
+    const livrosFormatados = livros
+      .filter(livro => livro._count.anuncios > 0)
+      .map(livro => ({
         id: livro.id,
         titulo: livro.titulo,
-        numAnuncios: livro._count.anuncios
+        numAnuncios: livro._count.anuncios,
       }));
 
-    res.status(200).json(livrosFiltrados);
+    res.status(200).json(livrosFormatados);
   } catch (error) {
-    res.status(400).json({ erro: "Erro ao buscar livros com anúncios." });
+    console.error(error);
+    res.status(500).json({ erro: "Erro ao buscar livros com anúncios" });
   }
 });
 
-type ClienteGroupByCidade = {
-  cidade: string
-  _count: {
-    cidade: number
-  }
-}
-
+// ✅ Endpoint: clientes por cidade
 router.get("/clientesCidade", async (req, res) => {
   try {
     const clientes = await prisma.usuario.groupBy({
-      by: ['cidade'],
-      _count: {
-        cidade: true,
-      },
-    })
+      by: ["cidade"],
+      _count: { cidade: true },
+    });
 
-    const clientes2 = clientes.map((cliente: ClienteGroupByCidade) => ({
+    const clientesFormatados = clientes.map(cliente => ({
       cidade: cliente.cidade,
-      num: cliente._count.cidade
-    }))
+      num: cliente._count.cidade,
+    }));
 
-    res.status(200).json(clientes2)
+    res.status(200).json(clientesFormatados);
   } catch (error) {
-    res.status(400).json(error)
+    console.error(error);
+    res.status(500).json({ erro: "Erro ao buscar clientes por cidade" });
   }
-})
+});
 
-export default router
+export default router;
