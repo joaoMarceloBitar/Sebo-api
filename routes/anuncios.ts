@@ -96,13 +96,34 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verificaToken, async (req, res) => {
   const { id } = req.params;
+
   try {
-    await prisma.anuncio.delete({ where: { id: Number(id) } });
-    res.status(204).send();
-  } catch (error) {
-    res.status(400).json({ erro: "Erro ao deletar anúncio." });
+    await prisma.proposta.deleteMany({
+      where: { anuncioId: Number(id) }
+    });
+
+    // Agora deletar o anúncio
+    const anuncioDeletado = await prisma.anuncio.delete({
+      where: { id: Number(id) }
+    });
+
+    res.status(200).json({
+      mensagem: "Anúncio e propostas relacionadas deletadas com sucesso",
+      anuncio: anuncioDeletado
+    });
+  } catch (error: any) {
+    console.error("Erro ao deletar anúncio:", error);
+
+    if (error.code === "P2025") {
+      return res.status(404).json({ erro: "Anúncio não encontrado" });
+    }
+
+    res.status(400).json({
+      erro: "Erro ao deletar anúncio",
+      detalhes: error.message
+    });
   }
 });
 
