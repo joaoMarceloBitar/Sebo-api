@@ -127,4 +127,28 @@ router.patch("/:id", async (req, res) => {
   }
 })
 
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params
+
+  try {
+    // Verifica se a proposta existe
+    const propostaExistente = await prisma.proposta.findUnique({
+      where: { id: Number(id) },
+    })
+
+    if (!propostaExistente) {
+      return res.status(404).json({ erro: "Proposta não encontrada" })
+    }
+
+    // Deleta a proposta
+    await prisma.proposta.delete({
+      where: { id: Number(id) },
+    })
+
+    res.status(200).json({ mensagem: "Proposta deletada com sucesso" })
+  } catch (error) {
+    res.status(400).json({ erro: "Erro ao deletar a proposta", detalhes: error })
+  }
+})
+
 export default router
